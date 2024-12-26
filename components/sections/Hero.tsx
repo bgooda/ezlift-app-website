@@ -1,10 +1,34 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
-import { FadeIn } from "@/components/animations/FadeIn";
 import { BRAND } from "@/lib/constants";
+import { FadeIn } from "./FadeIn";
+
+
+const HERO_CONFIG = {
+  background: {
+    src: "/hero-bg.webp",
+    alt: "Weightlifting background",
+    sizes: "(min-width: 1920px) 1920px, 100vw",
+    loading: "eager" as const,
+    priority: true
+  },
+  appPreview: {
+    src: "/app-preview.webp",
+    alt: "EZLift App showing a workout routine screen",
+    sizes: "(max-width: 768px) 90vw, (max-width: 1200px) 45vw, 500px",
+    loading: "eager" as const,
+    priority: true
+  },
+  storeBadges: {
+    src: "/store-badges.webp",
+    alt: "Download on the App Store and Get it on Google Play",
+    width: 156,
+    height: 52,
+    loading: "eager" as const
+  }
+};
 
 export function Hero() {
   return (
@@ -12,15 +36,22 @@ export function Hero() {
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438"
-          alt="Weightlifting background"
-          fill
+          {...HERO_CONFIG.background}
           className="object-cover opacity-40"
+          alt={HERO_CONFIG.background.alt}
           priority
+          quality={75}
           sizes="100vw"
-          quality={90}
+          width={1920}
+          height={1080}
+          placeholder="blur"
+          loading="eager"
+          blurDataURL="data:image/webp;base64,UklGRlIAAABXRUJQVlA4WAoAAAAQAAAABwAABwAAQUxQSBcAAAABF6CgbQNmFGAQQxQUFMQgBjEIQRACAFZQOCAYAAAAMAEAnQEqCAAIAABAAJ0BKggACAAAQAA="
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/80" />
+        <div 
+          className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/80" 
+          aria-hidden="true"
+        />
       </div>
 
       <div className="container px-4 mx-auto relative z-10">
@@ -30,39 +61,35 @@ export function Hero() {
               Your Personal{" "}
               <span className="bg-clip-text text-transparent bg-gradient-brand">
                 Fitness Journey
-              </span>{" "}
+              </span>
               Starts Here
             </h1>
             <p className="text-xl text-gray-300 max-w-[600px] leading-relaxed">
               Track workouts, analyze progress, and achieve your fitness goals with EZLift - the smart workout companion that adapts to your needs.
             </p>
             <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
-              <Link 
+            <Link 
                 href={BRAND.links.appStore}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="transition-transform hover:scale-105"
+                className="transform transition-transform hover:scale-105 duration-300"
+                aria-label="Download on the App Store"
               >
                 <Image
+                  {...HERO_CONFIG.storeBadges}
                   src="/app-store-badge.svg"
-                  alt="Download on the App Store"
-                  width={156}
-                  height={52}
-                  className="h-[52px] w-auto"
-                  priority
+                  alt={HERO_CONFIG.storeBadges.alt}
                 />
               </Link>
               <Link
                 href="/android"
-                className="transition-transform hover:scale-105"
+                className="transform transition-transform hover:scale-105 duration-300"
+                aria-label="Get it on Google Play"
               >
                 <Image
+                  {...HERO_CONFIG.storeBadges}
                   src="/play-store-badge.svg"
-                  alt="Get it on Google Play"
-                  width={156}
-                  height={52}
-                  className="h-[52px] w-auto"
-                  priority
+                  alt={HERO_CONFIG.storeBadges.alt}
                 />
               </Link>
             </div>
@@ -70,14 +97,17 @@ export function Hero() {
           
           <FadeIn className="flex-1" delay={200}>
             <div className="relative w-full max-w-[500px] mx-auto">
-              <div className="pb-[216.744%]" /> {/* 466/215 ≈ 216.744% for correct aspect ratio */}
+              <div 
+                className="pb-[216.744%]" 
+                aria-hidden="true"
+              /> 
               <Image
-                src="https://is2-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/6c/06/24/6c06248e-901a-7373-8ff6-2998bba6ac7e/default_routine.jpeg/0x0ss.png"
-                alt="EZLift App in action"
+                {...HERO_CONFIG.appPreview}
                 fill
                 className="absolute inset-0 object-cover rounded-2xl shadow-2xl"
-                priority
-                sizes="(max-width: 768px) 100vw, 300px"
+                placeholder="blur"
+                blurDataURL="data:image/webp;base64,UklGRlIAAABXRUJQVlA4WAoAAAAQAAAABwAABwAAQUxQSBcAAAABF6CgbQNmFGAQQxQUFMQgBjEIQRACAFZQOCAYAAAAMAEAnQEqCAAIAABAAJ0BKggACAAAQAA="
+                alt={HERO_CONFIG.appPreview.alt}
               />
             </div>
           </FadeIn>
