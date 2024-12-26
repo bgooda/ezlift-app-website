@@ -6,16 +6,27 @@ import { Card } from "@/components/ui/card";
 import type { TeamMember } from "@/types/team";
 
 export function TeamMemberCard({ name, role, image, socials }: TeamMember) {
+
   return (
     <Card className="overflow-hidden">
       <div className="relative aspect-[3/4] w-full">
-        <Image
-          src={image}
-          alt={name}
-          fill
-          className="object-cover transition-transform hover:scale-105 duration-300"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        />
+        <picture>
+          {/* WebP version */}
+          <source 
+            type="image/webp" 
+            srcSet={image}
+          />
+          {/* Fallback JPG version */}
+          <img
+            src={image}
+            alt={name}
+            width="361"
+            height="481"
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-cover transition-transform hover:scale-105 duration-300 grayscale"
+          />
+        </picture>
       </div>
       <div className="p-6">
         <h3 className="text-xl font-semibold mb-1">{name}</h3>
