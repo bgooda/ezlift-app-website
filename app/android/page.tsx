@@ -7,15 +7,49 @@ import { useState } from "react";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { Smartphone } from "lucide-react";
 
+const DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1323013440322670592/Ou2iS_tN_ugBwc4ZFlL6cQRHavl-UfJkcZuKCpVSeDQs3QawAeT-ZvoIeQD2M55hRWpG";
+
 export default function AndroidWaitlist() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, you'd send this to your API
-    console.log("Email submitted:", email);
-    setSubmitted(true);
+    setIsSubmitting(true);
+    setError("");
+
+    try {
+      const response = await fetch(DISCORD_WEBHOOK, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          content: "New Android Waitlist Signup",
+          embeds: [{
+            title: "Android Waitlist Entry",
+            fields: [
+              { name: "Email", value: email }
+            ],
+            color: 5814783,
+            timestamp: new Date().toISOString()
+          }]
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit');
+      }
+
+      setSubmitted(true);
+    } catch (error) {
+      console.error("Error:", error);
+      setError("Failed to join waitlist. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -51,9 +85,13 @@ export default function AndroidWaitlist() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   className="max-w-md mx-auto"
+                  disabled={isSubmitting}
                 />
-                <Button type="submit" size="lg">
-                  Notify Me
+                {error && (
+                  <p className="text-sm text-red-500">{error}</p>
+                )}
+                <Button type="submit" size="lg" disabled={isSubmitting}>
+                  {isSubmitting ? "Submitting..." : "Notify Me"}
                 </Button>
               </form>
             )}
