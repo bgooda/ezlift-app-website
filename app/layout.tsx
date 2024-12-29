@@ -1,9 +1,11 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Manrope } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme/ThemeProvider';
+import { CookieBanner } from '@/components/cookies/CookieBanner';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' });
+const manrope = Manrope({ subsets: ['latin'], display: 'swap' });
 
 export const metadata: Metadata = {
   title: 'EZLift - Your Smart Workout Companion',
@@ -27,6 +29,7 @@ export default function RootLayout({
           <div className="flex min-h-screen flex-col bg-background text-foreground">
             {children}
           </div>
+          <CookieBanner />
         </ThemeProvider>
       </body>
     </html>
