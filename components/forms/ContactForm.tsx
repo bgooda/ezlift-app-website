@@ -4,7 +4,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { BRAND } from "@/lib/constants";
+
+const DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1323012306061234278/iJmoa7EV4avG6xzFMv9eHQZCNDd_Zr4-P7eotgr8iJLoZPKaPSb7vcTtr1IFOwDTyZNX";
 
 export function ContactForm() {
   const [formData, setFormData] = useState({
@@ -14,22 +15,42 @@ export function ContactForm() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError("");
 
     try {
-      // In a real app, you'd send this to your API endpoint
-      // For now, we'll just simulate an API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      console.log("Form submitted:", {
-        ...formData,
-        to: BRAND.company.email,
+      const response = await fetch(DISCORD_WEBHOOK, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          content: `New Contact Form Submission`,
+          embeds: [{
+            title: "Contact Form Details",
+            fields: [
+              { name: "Name", value: formData.name, inline: true },
+              { name: "Email", value: formData.email, inline: true },
+              { name: "Message", value: formData.message }
+            ],
+            color: 5814783,
+            timestamp: new Date().toISOString()
+          }]
+        }),
       });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit form');
+      }
+      
       setSubmitted(true);
     } catch (error) {
       console.error("Error submitting form:", error);
+      setError("Failed to submit form. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -86,6 +107,10 @@ export function ContactForm() {
           onChange={(e) => setFormData({ ...formData, message: e.target.value })}
         />
       </div>
+
+      {error && (
+        <p className="text-sm text-red-500">{error}</p>
+      )}
 
       <Button type="submit" disabled={isSubmitting}>
         {isSubmitting ? "Sending..." : "Send Message"}
