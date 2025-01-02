@@ -5,19 +5,11 @@ import Image from "next/image";
 import { BRAND } from "@/lib/constants";
 import { FadeIn } from "./FadeIn";
 
-
 const HERO_CONFIG = {
   background: {
     src: "/hero-bg.webp",
     alt: "Weightlifting background",
     sizes: "(min-width: 1920px) 1920px, 100vw",
-    loading: "eager" as const,
-    priority: true
-  },
-  appPreview: {
-    src: "/app-preview.webp",
-    alt: "EZLift App showing a workout routine screen",
-    sizes: "(max-width: 768px) 90vw, (max-width: 1200px) 45vw, 500px",
     loading: "eager" as const,
     priority: true
   },
@@ -32,12 +24,12 @@ const HERO_CONFIG = {
 
 export function Hero() {
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center bg-black">
+    <section className="relative h-screen flex items-center justify-center bg-black">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <Image
           {...HERO_CONFIG.background}
-          className="object-cover opacity-40"
+          className="object-cover opacity-40 h-full"
           alt={HERO_CONFIG.background.alt}
           priority
           quality={75}
@@ -55,20 +47,21 @@ export function Hero() {
       </div>
 
       <div className="container px-4 mx-auto relative z-10">
-        <div className="flex flex-col lg:flex-row items-center gap-12">
-          <FadeIn className="flex-1 space-y-8 text-white">
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
+        <div className="flex items-center justify-center">
+          <FadeIn className="max-w-3xl mx-auto text-center space-y-8 text-white">
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-tight">
               Your Personal{" "}
               <span className="bg-clip-text text-transparent bg-gradient-brand">
                 Fitness Journey
               </span>
+              {" "}
               Starts Here
             </h1>
-            <p className="text-xl text-gray-300 max-w-[600px] leading-relaxed">
+            <p className="text-xl text-gray-300 leading-relaxed mx-auto">
               Track workouts, analyze progress, and achieve your fitness goals with EZLift - the smart workout companion that adapts to your needs.
             </p>
-            <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
-            <Link 
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+              <Link 
                 href={BRAND.links.appStore}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -79,6 +72,7 @@ export function Hero() {
                   {...HERO_CONFIG.storeBadges}
                   src="/app-store-badge.svg"
                   alt={HERO_CONFIG.storeBadges.alt}
+                  className="h-[52px] w-[156px]"
                 />
               </Link>
               <Link
@@ -90,25 +84,9 @@ export function Hero() {
                   {...HERO_CONFIG.storeBadges}
                   src="/play-store-badge.svg"
                   alt={HERO_CONFIG.storeBadges.alt}
+                  className="h-[52px] w-[156px]"
                 />
               </Link>
-            </div>
-          </FadeIn>
-          
-          <FadeIn className="flex-1" delay={200}>
-            <div className="relative w-full max-w-[500px] mx-auto">
-              <div 
-                className="pb-[216.744%]" 
-                aria-hidden="true"
-              /> 
-              <Image
-                {...HERO_CONFIG.appPreview}
-                fill
-                className="absolute inset-0 object-cover rounded-2xl shadow-2xl"
-                placeholder="blur"
-                blurDataURL="data:image/webp;base64,UklGRlIAAABXRUJQVlA4WAoAAAAQAAAABwAABwAAQUxQSBcAAAABF6CgbQNmFGAQQxQUFMQgBjEIQRACAFZQOCAYAAAAMAEAnQEqCAAIAABAAJ0BKggACAAAQAA="
-                alt={HERO_CONFIG.appPreview.alt}
-              />
             </div>
           </FadeIn>
         </div>
